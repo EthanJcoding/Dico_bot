@@ -1,18 +1,18 @@
 // index.js
-const { client, startBot } = require("./bot.js");
-const { scheduleCommand } = require("./commands/schedule/schedule.js");
-const { handleCommandInteraction } = require("./events/interaction.js");
-
-client.on("interactionCreate", handleCommandInteraction);
+import { REST, Routes } from "discord.js";
+import { startBot } from "./bot.js";
+import { addUserCommand, scheduleCommand } from "./commands/index.js";
 
 async function initializeCommands() {
+  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+
   try {
-    console.log("Started refreshing application (/) commands.");
-
-    await client.application.commands.set(
-      [scheduleCommand].map(command => command.toJSON())
-    );
-
+    await rest.put(Routes.applicationCommands(process.env.ID), {
+      body: [scheduleCommand, addUserCommand],
+    });
+    // await client.application.commands.set(
+    //   [scheduleCommand, addUserCommand].map(command => command.toJSON())
+    // );
     console.log("Successfully reloaded application (/) commands.");
   } catch (error) {
     console.error(error);
@@ -20,6 +20,6 @@ async function initializeCommands() {
 }
 
 (async () => {
-  await startBot();
   initializeCommands();
+  await startBot();
 })();

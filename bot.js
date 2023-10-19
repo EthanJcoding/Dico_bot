@@ -1,7 +1,8 @@
-const { Client, GatewayIntentBits } = require("discord.js");
-const { config } = require("dotenv");
-const { initializeApp } = require("firebase/app");
-const { getDatabase, set, ref, remove } = require("firebase/database");
+import { Client, GatewayIntentBits } from "discord.js";
+import { config } from "dotenv";
+import { initializeApp } from "firebase/app";
+import { getDatabase, set, ref, remove } from "firebase/database";
+import { handleCommandInteraction } from "./events/interaction.js";
 
 config();
 
@@ -13,7 +14,6 @@ const client = new Client({
   ],
 });
 
-// Initialize Firebase
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -33,9 +33,12 @@ client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);
 });
 
+// When user adds the bot to his channel
 client.on("guildCreate", guild => {
   const guildId = guild.id;
+  const joinedAt = new Date().toDateString();
   set(ref(database, `guilds/${guildId}`), {
+    joinedAt,
     guildId,
     isActive: true,
   })
@@ -47,6 +50,7 @@ client.on("guildCreate", guild => {
     });
 });
 
+// When user kicks the bot out of his channel
 client.on("guildDelete", guild => {
   const guildId = guild.id;
   remove(ref(database, `guilds/${guildId}`))
@@ -58,6 +62,8 @@ client.on("guildDelete", guild => {
     });
 });
 
+client.on("interactionCreate", handleCommandInteraction);
+
 async function startBot() {
   try {
     await client.login(process.env.TOKEN);
@@ -66,4 +72,4 @@ async function startBot() {
   }
 }
 
-module.exports = { client, startBot };
+export { client, startBot, database };
