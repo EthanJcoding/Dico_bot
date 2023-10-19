@@ -9,10 +9,25 @@ const saveUserToGame = async (gameId, guildId, username, gameUsername) => {
 
     if (snapshot.exists()) {
       const game = snapshot.val();
-      game.member.push({ user: username, gameUsername });
 
-      await update(gameRef, { member: game.member });
-      return dayjs(game.date).format("MM월DD일 HH:mm");
+      if (game.members.length >= 10) {
+        return "자리가 꽉 찼어요 😭";
+      }
+
+      for (const member of game.members) {
+        if (member.gameUsername === gameUsername || member.user === username) {
+          return "이미 등록을 완료했어요 😅";
+        }
+      }
+
+      game.members.push({ user: username, gameUsername, joinedAt: new Date() });
+
+      await update(gameRef, { members: game.members });
+      return `**${gameUsername}님께서 ${dayjs(game.date).format(
+        "MM월DD일 HH:mm"
+      )} 에 시작하는 내전에 참여했습니다!**\n> 현재 잔여석 ${
+        10 - game.members.length
+      }`;
     }
   } catch (error) {
     console.error("Error while fetching active games:", error);

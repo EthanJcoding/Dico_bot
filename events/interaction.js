@@ -6,6 +6,7 @@ import {
 import { database } from "../bot.js";
 import { set, ref, push } from "firebase/database";
 import { getActiveGames, saveUserToGame } from "../firebase/index.js";
+import { isDateTimeValid } from "../utils/isDateTimeValid.js";
 
 async function handleCommandInteraction(interaction) {
   const { commandName, options } = interaction;
@@ -16,7 +17,14 @@ async function handleCommandInteraction(interaction) {
       const date = options.getString("날짜");
       const time = options.getString("시작시간");
       const gameUsername = options.getString("유저명");
-      const scheduledTime = new Date(`${date}T${time}:00`).toString();
+
+      if (!isDateTimeValid(date, time)) {
+        await interaction.reply({
+          content:
+            "잘못된 날짜 또는 시간 형식입니다. 날짜 형식: YYYY-MM-DD, 시간 형식: HH:MM",
+        });
+        return; // Exit the command
+      }
 
       try {
         const guildsRef = ref(database, `guilds/${guildId}/games`);
@@ -25,13 +33,15 @@ async function handleCommandInteraction(interaction) {
         const gameData = {
           key: newRef.key,
           createdBy: interaction.user.globalName,
-          date: scheduledTime,
-          member: [{ user: interaction.user.username, gameUsername }],
+          date: new Date(`${date}T${time}:00`).toString(),
+          members: [{ user: interaction.user.globalName, gameUsername }],
           isActive: true,
         };
 
         await set(newRef, gameData);
-        await interaction.reply(`Scheduling is complete for ${date} ${time}`);
+        await interaction.reply(
+          `**${interaction.user.globalName}님께서 ${date} ${time} 날짜로 내전을 만들었어요** 😎`
+        );
       } catch (error) {
         console.error(error);
         await interaction.reply(
@@ -45,24 +55,31 @@ async function handleCommandInteraction(interaction) {
 
       try {
         const gamesArr = await getActiveGames(guildId, gameUsername);
-        const selectMenu = new StringSelectMenuBuilder()
-          .setCustomId("selectGame")
-          .setPlaceholder("참여를 원하는 내전을 선택해주세요")
-          .addOptions(
-            gamesArr.map(game => {
-              return new StringSelectMenuOptionBuilder()
-                .setLabel(game.label)
-                .setDescription(game.description)
-                .setValue(game.value);
-            })
-          );
 
-        const row = new ActionRowBuilder().addComponents(selectMenu);
+        if (gamesArr.length !== 0) {
+          const selectMenu = new StringSelectMenuBuilder()
+            .setCustomId("selectGame")
+            .setPlaceholder("참여를 원하는 내전을 선택해주세요")
+            .addOptions(
+              gamesArr.map(game => {
+                return new StringSelectMenuOptionBuilder()
+                  .setLabel(game.label)
+                  .setDescription(game.description)
+                  .setValue(game.value);
+              })
+            );
 
-        await interaction.reply({
-          content: "현재 활성화된 내전이에요!",
-          components: [row],
-        });
+          const row = new ActionRowBuilder().addComponents(selectMenu);
+
+          await interaction.reply({
+            content: "**현재 활성화된 내전이에요!**",
+            components: [row],
+          });
+        } else {
+          await interaction.reply({
+            content: "**현재 참여 가능한 내전이 없어요** 😭",
+          });
+        }
       } catch (err) {
         console.error(err);
       }
@@ -70,17 +87,16 @@ async function handleCommandInteraction(interaction) {
   } else if (interaction.isStringSelectMenu()) {
     if (interaction.customId === "selectGame") {
       const [gameId, gameUsername] = interaction.values.join(",").split(",");
-      const username = interaction.user.username;
+      const username = interaction.user.globalName;
 
       try {
-        const gameDay = await saveUserToGame(
-          gameId,
-          guildId,
-          username,
-          gameUsername
-        );
         await interaction.reply({
-          content: `${interaction.user.globalName}님께서 ${gameDay} 에 시작하는 내전에 참여했습니다!`,
+          content: await saveUserToGame(
+            gameId,
+            guildId,
+            username,
+            gameUsername
+          ),
         });
       } catch (error) {
         console.error(error);
