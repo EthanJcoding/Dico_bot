@@ -1,4 +1,10 @@
 import { addUserCommand } from "./user/addUser.js";
-import { scheduleCommand } from "./schedule/schedule.js";
-
-export { addUserCommand, scheduleCommand };
+import { addScheduleCommand } from "./schedule/addSchedule.js";
+import { getScheduleCommand } from "./schedule/getSchedule.js";
+import { deleteScheduleCommand } from "./schedule/deleteSchedule.js";
+export {
+  addUserCommand,
+  addScheduleCommand,
+  getScheduleCommand,
+  deleteScheduleCommand,
+};

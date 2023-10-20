@@ -23,7 +23,7 @@ const saveUserToGame = async (gameId, guildId, username, gameUsername) => {
       game.members.push({ user: username, gameUsername, joinedAt: new Date() });
 
       await update(gameRef, { members: game.members });
-      return `**${gameUsername}님께서 ${dayjs(game.date).format(
+      return `**${username}님께서 ${dayjs(game.date).format(
         "MM월DD일 HH:mm"
       )} 에 시작하는 내전에 참여했습니다!**\n> 현재 잔여석 ${
         10 - game.members.length

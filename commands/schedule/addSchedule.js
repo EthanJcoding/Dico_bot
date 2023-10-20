@@ -1,7 +1,6 @@
-// commands.js
 import { SlashCommandBuilder } from "@discordjs/builders";
 
-const scheduleCommand = new SlashCommandBuilder()
+const addScheduleCommand = new SlashCommandBuilder()
   .setName("내전만들기")
   .setDescription("내전 스케쥴을 잡아요!")
   .addStringOption(option =>
@@ -17,4 +16,4 @@ const scheduleCommand = new SlashCommandBuilder()
     option.setName("시작시간").setDescription("Time (HH:MM)").setRequired(true)
   );
 
-export { scheduleCommand };
+export { addScheduleCommand };

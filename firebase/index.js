@@ -1,4 +1,4 @@
 import { saveUserToGame } from "./saveUserToGame/saveUserToGame.js";
 import { getActiveGames } from "./getActiveGames/getActiveGames.js";
-
-export { saveUserToGame, getActiveGames };
+import { deleteGames } from "./deleteGames/deleteGames.js";
+export { saveUserToGame, getActiveGames, deleteGames };
