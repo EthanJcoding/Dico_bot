@@ -35,15 +35,16 @@ client.once("ready", () => {
 
 // When user adds the bot to his channel
 client.on("guildCreate", guild => {
-  const guildId = guild.id;
+  const { id, name } = guild;
   const joinedAt = new Date().toDateString();
-  set(ref(database, `guilds/${guildId}`), {
+  set(ref(database, `guilds/${id}`), {
     joinedAt,
-    guildId,
+    id,
+    name,
     isActive: true,
   })
     .then(() => {
-      console.log(guildId + " has joined the bot");
+      console.log(id + " has joined the bot");
     })
     .catch(error => {
       console.log(error);
