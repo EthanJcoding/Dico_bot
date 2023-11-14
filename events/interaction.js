@@ -60,12 +60,16 @@ async function handleCommandInteraction(interaction) {
         const gameData = {
           gameId: newRef.key,
           createdBy: username,
-          date: new Date(`${date}T${time}:00`).toString(),
+          date: new Date(`${date}T${time}:00`).toLocaleString("en-US", {
+            timeZone: "Asia/Seoul",
+          }),
           members: [
             {
               user: username,
               gameUsername,
-              joinedAt: new Date().toString(),
+              joinedAt: new Date().toLocaleString("en-US", {
+                timeZone: "Asia/Seoul",
+              }),
               avatar,
               acs: getRandomNumber(1, 400),
             },
@@ -75,7 +79,7 @@ async function handleCommandInteraction(interaction) {
 
         await set(newRef, gameData);
         await interaction.reply(
-          `**${username}님께서 ${date} ${time} 날짜로 내전을 만들었어요** 😎`
+          `**${username}님께서 ${date} ${time} 날짜로 내전을 만들었어요** 😎 \n https://junilbot.vercel.app/guilds/${guildId}`
         );
       } catch (error) {
         console.error(error);
