@@ -17,7 +17,7 @@ const cancelParticipation = async (gameId, guildId, username) => {
       return "취소 성공 😎";
     }
   } catch (error) {
-    console.error("Error while fetching active games:", error);
+    console.error("Error while cancel participation:", error);
     return [];
   }
 };

@@ -30,8 +30,8 @@ const refreshActiveGame = async () => {
     }
 
     console.log("refreshed!");
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.error("Error while refreshing active games:", error);
   }
 };
 
