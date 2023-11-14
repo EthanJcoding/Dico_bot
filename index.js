@@ -6,6 +6,7 @@ import {
   addScheduleCommand,
   getScheduleCommand,
   deleteScheduleCommand,
+  testCommand,
 } from "./commands/index.js";
 
 async function initializeCommands() {
@@ -18,6 +19,7 @@ async function initializeCommands() {
         addUserCommand,
         getScheduleCommand,
         deleteScheduleCommand,
+        testCommand,
       ],
     });
     // await client.application.commands.set(
