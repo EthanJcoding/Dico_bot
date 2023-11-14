@@ -15,7 +15,7 @@ const getActiveGames = async (guildId, option, gameUsername) => {
       if (option === "participateGame") {
         return activeGames.map(game => ({
           label: game.createdBy,
-          value: game.key + "," + gameUsername,
+          value: game.gameId + "," + gameUsername,
           description: dayjs(game.date).format("YYYY.MM.DD HH:mm"),
         }));
       }
@@ -23,7 +23,7 @@ const getActiveGames = async (guildId, option, gameUsername) => {
       if (option === "deleteGame") {
         return activeGames.map(game => ({
           label: game.createdBy,
-          value: game.key,
+          value: game.gameId,
           description: dayjs(game.date).format("YYYY.MM.DD HH:mm"),
         }));
       }

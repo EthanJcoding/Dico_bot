@@ -12,6 +12,7 @@ import {
 } from "../firebase/index.js";
 import { isDateTimeValid } from "../utils/isDateTimeValid.js";
 import { embedInteraction } from "./embed/embed.js";
+import { getRandomNumber } from "../utils/getRandomNumber.js";
 
 async function handleCommandInteraction(interaction) {
   const { commandName, options } = interaction;
@@ -21,7 +22,23 @@ async function handleCommandInteraction(interaction) {
       ? interaction.user.globalName
       : interaction.user.username;
 
+  const avatar = interaction.user.displayAvatarURL({
+    dynamic: true,
+    format: "png",
+    size: 128,
+  });
+
   if (interaction.isCommand()) {
+    if (commandName === "test") {
+      console.log(
+        interaction.user.displayAvatarURL({
+          dynamic: true,
+          format: "png",
+          size: 128,
+        })
+      );
+    }
+
     if (commandName === "내전만들기") {
       const date = options.getString("날짜");
       const time = options.getString("시작시간");
@@ -32,7 +49,7 @@ async function handleCommandInteraction(interaction) {
           content:
             "잘못된 날짜 또는 시간 형식입니다. 날짜 형식: YYYY-MM-DD, 시간 형식: HH:MM",
         });
-        return; // Exit the command
+        return;
       }
 
       try {
@@ -40,7 +57,7 @@ async function handleCommandInteraction(interaction) {
         const newRef = push(guildsRef);
 
         const gameData = {
-          key: newRef.key,
+          gameId: newRef.key,
           createdBy: username,
           date: new Date(`${date}T${time}:00`).toString(),
           members: [
@@ -48,6 +65,8 @@ async function handleCommandInteraction(interaction) {
               user: username,
               gameUsername,
               joinedAt: new Date().toString(),
+              avatar,
+              acs: getRandomNumber(1, 400),
             },
           ],
           isActive: true,
@@ -181,7 +200,8 @@ async function handleCommandInteraction(interaction) {
             gameId,
             guildId,
             username,
-            gameUsername
+            gameUsername,
+            avatar
           ),
         });
       } catch (error) {

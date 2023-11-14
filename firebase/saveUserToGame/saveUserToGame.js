@@ -1,8 +1,15 @@
 import { database } from "../../bot.js";
 import { ref, get, update } from "firebase/database";
+import { getRandomNumber } from "../../utils/getRandomNumber.js";
 import dayjs from "dayjs";
 
-const saveUserToGame = async (gameId, guildId, username, gameUsername) => {
+const saveUserToGame = async (
+  gameId,
+  guildId,
+  username,
+  gameUsername,
+  avatar
+) => {
   try {
     const gameRef = ref(database, `guilds/${guildId}/games/${gameId}`);
     const snapshot = await get(gameRef);
@@ -20,7 +27,13 @@ const saveUserToGame = async (gameId, guildId, username, gameUsername) => {
         }
       }
 
-      game.members.push({ user: username, gameUsername, joinedAt: new Date() });
+      game.members.push({
+        user: username,
+        gameUsername,
+        joinedAt: new Date(),
+        avatar,
+        acs: getRandomNumber(1, 400),
+      });
 
       await update(gameRef, { members: game.members });
       return `**${username}님께서 ${dayjs(game.date).format(
