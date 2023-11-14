@@ -43,8 +43,8 @@ const saveUserToGame = async (
       }`;
     }
   } catch (error) {
-    console.error("Error while fetching active games:", error);
-    return []; // Handle the error gracefully
+    console.error("Error while saving user to active games:", error);
+    return [];
   }
 };
 

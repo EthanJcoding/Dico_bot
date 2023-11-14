@@ -36,7 +36,7 @@ const getActiveGames = async (guildId, option, gameUsername) => {
     }
   } catch (error) {
     console.error("Error while fetching active games:", error);
-    return []; // Handle the error gracefully
+    return [];
   }
 };
 

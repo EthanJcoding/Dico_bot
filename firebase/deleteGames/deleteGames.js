@@ -14,8 +14,8 @@ const deleteGames = async (gameId, guildId, username) => {
       "MM월DD일 HH:mm"
     )}시에 시작하는 내전을 삭제했습니다!**`;
   } catch (error) {
-    console.error("Error while fetching active games:", error);
-    return []; // Handle the error gracefully
+    console.error("Error while deleting active games:", error);
+    return [];
   }
 };
 

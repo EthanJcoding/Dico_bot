@@ -6,6 +6,7 @@ import {
 import { database } from "../bot.js";
 import { set, ref, push } from "firebase/database";
 import {
+  cancelParticipation,
   deleteGames,
   getActiveGames,
   saveUserToGame,
@@ -121,6 +122,43 @@ async function handleCommandInteraction(interaction) {
       }
     }
 
+    if (commandName === "참여취소하기") {
+      const gameUsername = options.getString("유저명");
+      const option = "participateGame";
+
+      try {
+        const gamesArr = await getActiveGames(guildId, option, gameUsername);
+
+        if (gamesArr.length !== 0) {
+          const selectMenu = new StringSelectMenuBuilder()
+            .setCustomId("cancelParticipation")
+            .setPlaceholder("취소를 원하는 내전을 선택해주세요")
+            .addOptions(
+              gamesArr.map(game => {
+                return new StringSelectMenuOptionBuilder()
+                  .setLabel(game.label)
+                  .setDescription(game.description)
+                  .setValue(game.value);
+              })
+            );
+
+          const row = new ActionRowBuilder().addComponents(selectMenu);
+
+          await interaction.reply({
+            content: "\n**현재 활성화된 내전이에요!**",
+            components: [row],
+            ephemeral: true,
+          });
+        } else {
+          await interaction.reply({
+            content: "**현재 취소 가능한 내전이 없어요** 😭",
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     if (commandName === "내전확인하기") {
       const option = "checkGame";
 
@@ -203,6 +241,22 @@ async function handleCommandInteraction(interaction) {
             gameUsername,
             avatar
           ),
+        });
+      } catch (error) {
+        console.error(error);
+        await interaction.reply({
+          content: "에러발생! 다시 시도해주세요 🥲",
+        });
+      }
+    }
+
+    if (interaction.customId === "cancelParticipation") {
+      const [gameId] = interaction.values.join(",").split(",");
+      const username = interaction.user.username;
+
+      try {
+        await interaction.reply({
+          content: await cancelParticipation(gameId, guildId, username),
         });
       } catch (error) {
         console.error(error);
