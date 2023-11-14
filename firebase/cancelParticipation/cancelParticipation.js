@@ -14,7 +14,7 @@ const cancelParticipation = async (gameId, guildId, username) => {
       );
 
       await update(gameRef, { members: updatedMembers });
-      return "취소 성공 😎";
+      return `**취소 성공** 😎\n> 현재 잔여석 ${10 - updatedMembers.length}`;
     }
   } catch (error) {
     console.error("Error while cancel participation:", error);
