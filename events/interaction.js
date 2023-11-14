@@ -49,7 +49,7 @@ async function handleCommandInteraction(interaction) {
           content:
             "잘못된 날짜 또는 시간 형식입니다. 날짜 형식: YYYY-MM-DD, 시간 형식: HH:MM",
         });
-        return; // Exit the command
+        return;
       }
 
       try {

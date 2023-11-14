@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import { initializeApp } from "firebase/app";
 import { getDatabase, set, ref, remove } from "firebase/database";
 import { handleCommandInteraction } from "./events/interaction.js";
-
+import { refreshActiveGame } from "./firebase/refreshActiveGame/refreshActiveGame.js";
 config();
 
 const client = new Client({
@@ -31,6 +31,16 @@ const database = getDatabase(app);
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);
+});
+
+client.on("ready", async () => {
+  setInterval(async () => {
+    try {
+      await refreshActiveGame();
+    } catch (err) {
+      console.log(err);
+    }
+  }, 3600000);
 });
 
 // When user adds the bot to his channel

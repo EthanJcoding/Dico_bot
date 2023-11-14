@@ -21,11 +21,11 @@ const saveUserToGame = async (
         return "자리가 꽉 찼어요 😭";
       }
 
-      // for (const member of game.members) {
-      //   if (member.gameUsername === gameUsername || member.user === username) {
-      //     return "이미 등록을 완료했어요 😅";
-      //   }
-      // }
+      for (const member of game.members) {
+        if (member.gameUsername === gameUsername || member.user === username) {
+          return "이미 등록을 완료했어요 😅";
+        }
+      }
 
       game.members.push({
         user: username,
