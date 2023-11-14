@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import { initializeApp } from "firebase/app";
 import { getDatabase, set, ref, remove } from "firebase/database";
 import { handleCommandInteraction } from "./events/interaction.js";
-import { refreshActiveGame } from "./firebase/refreshActiveGame/refreshActiveGame.js";
+import { refreshActiveGame } from "./firebase/index.js";
 config();
 
 const client = new Client({
