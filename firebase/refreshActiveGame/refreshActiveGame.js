@@ -13,7 +13,7 @@ const refreshActiveGame = async () => {
       for (const guildId in guildData) {
         const guild = guildData[guildId];
         const games = guild.games;
-        const currentDate = new Date();
+        const currentDate = new Date().setHours(new Date().getHours() - 9);
 
         for (const gameId in games) {
           const game = games[gameId];
