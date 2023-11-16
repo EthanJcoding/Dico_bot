@@ -6,7 +6,7 @@ function isDateTimeValid(date, time) {
     date.match(dateTimeRegex) !== null &&
     time.match(/^\d{2}:\d{2}$/) !== null &&
     scheduledTime instanceof Date &&
-    scheduledTime > new Date()
+    scheduledTime > new Date().setHours(new Date().getHours - 9)
   );
 }
 

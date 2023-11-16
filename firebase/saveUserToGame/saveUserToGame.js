@@ -30,9 +30,7 @@ const saveUserToGame = async (
       game.members.push({
         user: username,
         gameUsername,
-        joinedAt: new Date().toLocaleString("en-US", {
-          timeZone: "Asia/Seoul",
-        }),
+        joinedAt: new Date().setHours(new Date().getHours() - 9),
         avatar,
         acs: getRandomNumber(1, 400),
       });

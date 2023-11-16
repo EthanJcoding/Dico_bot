@@ -23,6 +23,8 @@ async function handleCommandInteraction(interaction) {
       ? interaction.user.globalName
       : interaction.user.username;
 
+  const currentDate = new Date();
+
   const avatar = interaction.user.displayAvatarURL({
     dynamic: true,
     format: "png",
@@ -60,22 +62,22 @@ async function handleCommandInteraction(interaction) {
         const gameData = {
           gameId: newRef.key,
           createdBy: username,
-          date: new Date(`${date}T${time}:00`).toLocaleString("en-US", {
-            timeZone: "Asia/Seoul",
-          }),
+          date: new Date(`${date}T${time}:00`).setHours(
+            currentDate.getHours() - 9
+          ),
           members: [
             {
               user: username,
               gameUsername,
-              joinedAt: new Date().toLocaleString("en-US", {
-                timeZone: "Asia/Seoul",
-              }),
+              joinedAt: currentDate.setHours(currentDate.getHours() - 9),
               avatar,
               acs: getRandomNumber(1, 400),
             },
           ],
           isActive: true,
         };
+
+        console.log(gameData);
 
         await set(newRef, gameData);
         await interaction.reply(

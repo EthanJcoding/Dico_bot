@@ -46,7 +46,7 @@ client.on("ready", async () => {
 // When user adds the bot to his channel
 client.on("guildCreate", guild => {
   const { id, name } = guild;
-  const joinedAt = new Date().toDateString();
+  const joinedAt = new Date().setHours(new Date().getHours - 9);
   set(ref(database, `guilds/${id}`), {
     joinedAt,
     id,
