@@ -1,6 +1,9 @@
 import { database } from "../../bot.js";
 import { ref, get, set } from "firebase/database";
 
+const serverTime = new Date();
+serverTime.setHours(serverTime.getHours()) - 9;
+
 const refreshActiveGame = async () => {
   try {
     const guildsRef = ref(database, `guilds/`);
@@ -13,14 +16,13 @@ const refreshActiveGame = async () => {
       for (const guildId in guildData) {
         const guild = guildData[guildId];
         const games = guild.games;
-        const currentDate = new Date().setHours(new Date().getHours() - 9);
 
         for (const gameId in games) {
           const game = games[gameId];
 
           const gameDate = new Date(game.date);
 
-          if (gameDate < currentDate) {
+          if (gameDate < serverTime) {
             game.isActive = false;
           }
         }

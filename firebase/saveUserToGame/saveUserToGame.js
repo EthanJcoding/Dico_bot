@@ -3,6 +3,9 @@ import { ref, get, update } from "firebase/database";
 import { getRandomNumber } from "../../utils/getRandomNumber.js";
 import dayjs from "dayjs";
 
+const serverTime = new Date();
+serverTime.setHours(serverTime.getHours()) - 9;
+
 const saveUserToGame = async (
   gameId,
   guildId,
@@ -30,7 +33,7 @@ const saveUserToGame = async (
       game.members.push({
         user: username,
         gameUsername,
-        joinedAt: new Date().setHours(new Date().getHours() - 9),
+        joinedAt: serverTime,
         avatar,
         acs: getRandomNumber(1, 400),
       });
