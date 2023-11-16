@@ -60,22 +60,20 @@ async function handleCommandInteraction(interaction) {
         const gameData = {
           gameId: newRef.key,
           createdBy: username,
-          date: new Date(`${date}T${time}:00`).toLocaleString("en-US", {
-            timeZone: "Asia/Seoul",
-          }),
+          date: new Date(`${date}T${time}:00`).toString(),
           members: [
             {
               user: username,
               gameUsername,
-              joinedAt: new Date().toLocaleString("en-US", {
-                timeZone: "Asia/Seoul",
-              }),
+              joinedAt: new Date().toString(),
               avatar,
               acs: getRandomNumber(1, 400),
             },
           ],
           isActive: true,
         };
+
+        console.log(gameData);
 
         await set(newRef, gameData);
         await interaction.reply(
