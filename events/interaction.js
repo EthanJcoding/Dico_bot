@@ -34,13 +34,7 @@ async function handleCommandInteraction(interaction) {
 
   if (interaction.isCommand()) {
     if (commandName === "test") {
-      console.log(
-        interaction.user.displayAvatarURL({
-          dynamic: true,
-          format: "png",
-          size: 128,
-        })
-      );
+      console.log();
     }
 
     if (commandName === "내전만들기") {
@@ -74,6 +68,49 @@ async function handleCommandInteraction(interaction) {
             },
           ],
           isActive: true,
+          roundInfo: {
+            Round1: {
+              teamA: [],
+              teamB: [],
+              map: "",
+              avgAcsTeamA: 0,
+              avgAcsTeamB: 0,
+            },
+
+            Round2: {
+              teamA: [],
+              teamB: [],
+              map: "",
+              avgAcsTeamA: 0,
+              avgAcsTeamB: 0,
+            },
+
+            Round3: {
+              teamA: [],
+              teamB: [],
+              map: "",
+              avgAcsTeamA: 0,
+              avgAcsTeamB: 0,
+            },
+
+            Round4: {
+              teamA: [],
+              teamB: [],
+              map: "",
+              avgAcsTeamA: 0,
+              avgAcsTeamB: 0,
+            },
+
+            Round5: {
+              allMembers: [],
+              hasSelected: false,
+              teamA: [],
+              teamB: [],
+              map: "",
+              avgAcsTeamA: 0,
+              avgAcsTeamB: 0,
+            },
+          },
         };
 
         await set(newRef, gameData);
