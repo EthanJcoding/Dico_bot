@@ -54,6 +54,23 @@ async function handleCommandInteraction(interaction) {
         const guildsRef = ref(database, `guilds/${guildId}/games`);
         const newRef = push(guildsRef);
 
+        const generateRound = () => ({
+          allMembers: [],
+          teamA: [],
+          teamB: [],
+          map: "",
+          avgAcsTeamA: 0,
+          avgAcsTeamB: 0,
+        });
+
+        const generateRounds = numRounds => {
+          const rounds = {};
+          for (let i = 1; i <= numRounds; i++) {
+            rounds[`Round${i}`] = generateRound();
+          }
+          return rounds;
+        };
+
         const gameData = {
           gameId: newRef.key,
           createdBy: username,
@@ -68,49 +85,7 @@ async function handleCommandInteraction(interaction) {
             },
           ],
           isActive: true,
-          roundInfo: {
-            Round1: {
-              teamA: [],
-              teamB: [],
-              map: "",
-              avgAcsTeamA: 0,
-              avgAcsTeamB: 0,
-            },
-
-            Round2: {
-              teamA: [],
-              teamB: [],
-              map: "",
-              avgAcsTeamA: 0,
-              avgAcsTeamB: 0,
-            },
-
-            Round3: {
-              teamA: [],
-              teamB: [],
-              map: "",
-              avgAcsTeamA: 0,
-              avgAcsTeamB: 0,
-            },
-
-            Round4: {
-              teamA: [],
-              teamB: [],
-              map: "",
-              avgAcsTeamA: 0,
-              avgAcsTeamB: 0,
-            },
-
-            Round5: {
-              allMembers: [],
-              hasSelected: false,
-              teamA: [],
-              teamB: [],
-              map: "",
-              avgAcsTeamA: 0,
-              avgAcsTeamB: 0,
-            },
-          },
+          roundInfo: generateRounds(5), // Specify the number of rounds here
         };
 
         await set(newRef, gameData);

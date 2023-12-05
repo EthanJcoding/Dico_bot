@@ -24,7 +24,9 @@ const refreshActiveGame = async () => {
           const gameDate = new Date(game.date);
 
           if (game.isActive === true && gameDate < serverTime) {
-            console.log(`gamserver time: ${serverTime} game date: ${gameDate}`);
+            console.log(
+              `gamserver time: ${serverTime} game date: ${gameDate} GAME ID: ${gameId} is refreshed`
+            );
             game.isActive = false;
             count++;
           }
@@ -34,7 +36,7 @@ const refreshActiveGame = async () => {
       }
     }
 
-    console.log(`${count} games are refreshed!`);
+    console.log(`--------------------\n${count} games are refreshed!`);
     count = 0;
   } catch (error) {
     console.error("Error while refreshing active games:", error);
