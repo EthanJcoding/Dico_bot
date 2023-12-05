@@ -6,6 +6,7 @@ serverTime.setHours(serverTime.getHours()) - 9;
 
 const refreshActiveGame = async () => {
   try {
+    let count = 0;
     const guildsRef = ref(database, `guilds/`);
     const snapshot = await get(guildsRef);
 
@@ -22,8 +23,10 @@ const refreshActiveGame = async () => {
 
           const gameDate = new Date(game.date);
 
-          if (gameDate < serverTime) {
+          if (game.isActive === true && gameDate < serverTime) {
+            console.log(`gamserver time: ${serverTime} game date: ${gameDate}`);
             game.isActive = false;
+            count++;
           }
         }
 
@@ -31,7 +34,8 @@ const refreshActiveGame = async () => {
       }
     }
 
-    console.log("refreshed!");
+    console.log(`${count} games are refreshed!`);
+    count = 0;
   } catch (error) {
     console.error("Error while refreshing active games:", error);
   }

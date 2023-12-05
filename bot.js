@@ -34,6 +34,8 @@ client.once("ready", () => {
 });
 
 client.on("ready", async () => {
+  await refreshActiveGame();
+
   setInterval(async () => {
     try {
       await refreshActiveGame();
