@@ -4,6 +4,8 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, set, ref, remove } from "firebase/database";
 import { handleCommandInteraction } from "./events/interaction.js";
 import { refreshActiveGame } from "./firebase/index.js";
+// import { getFirestore } from "firebase/firestore";
+
 config();
 
 const client = new Client({
@@ -28,6 +30,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+// const firestore = getFirestore(app);
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);

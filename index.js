@@ -24,9 +24,7 @@ async function initializeCommands() {
         cancelParticipationCommand,
       ],
     });
-    // await client.application.commands.set(
-    //   [scheduleCommand, addUserCommand].map(command => command.toJSON())
-    // );
+
     console.log("Successfully reloaded application (/) commands.");
   } catch (error) {
     console.error(error);
