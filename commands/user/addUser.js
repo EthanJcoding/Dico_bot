@@ -8,12 +8,6 @@ const addUserCommand = new SlashCommandBuilder()
       .setName("유저명")
       .setDescription("발로란트 유저명을 적어주세요 ex)형이 얘기하잖아#kr1")
       .setRequired(true)
-  )
-  .addStringOption(option =>
-    option
-      .setName("티어")
-      .setDescription("ex) 골드2 → 골드, 언랭 → 언랭")
-      .setRequired(true)
   );
 
 export { addUserCommand };
