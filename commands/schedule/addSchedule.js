@@ -14,12 +14,6 @@ const addScheduleCommand = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option.setName("시작시간").setDescription("Time (HH:MM)").setRequired(true)
-  )
-  .addStringOption(option =>
-    option
-      .setName("티어")
-      .setDescription("ex) 골드2 → 골드, 언랭 → 언랭")
-      .setRequired(true)
   );
 
 export { addScheduleCommand };
