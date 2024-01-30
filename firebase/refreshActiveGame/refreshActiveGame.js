@@ -18,21 +18,23 @@ const refreshActiveGame = async () => {
         const guild = guildData[guildId];
         const games = guild.games;
 
-        for (const gameId in games) {
-          const game = games[gameId];
+        if (games !== undefined) {
+          for (const gameId in games) {
+            const game = games[gameId];
 
-          const gameDate = new Date(game.date);
+            const gameDate = new Date(game.date);
 
-          if (game.isActive === true && gameDate < serverTime) {
-            console.log(
-              `gamserver time: ${serverTime} game date: ${gameDate} GAME ID: ${gameId} is refreshed`
-            );
-            game.isActive = false;
-            count++;
+            if (game.isActive === true && gameDate < serverTime) {
+              console.log(
+                `gamserver time: ${serverTime} game date: ${gameDate} GAME ID: ${gameId} is refreshed`
+              );
+              game.isActive = false;
+              count++;
+            }
           }
-        }
 
-        await set(ref(database, `guilds/${guildId}/games`), games);
+          await set(ref(database, `guilds/${guildId}/games`), games);
+        }
       }
     }
 

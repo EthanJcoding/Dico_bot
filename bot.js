@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, set, ref, remove } from "firebase/database";
 import { handleCommandInteraction } from "./events/interaction.js";
 import { refreshActiveGame } from "./firebase/index.js";
+// import { initBot } from "./firebase/initBot/initBot.js";
 // import { getFirestore } from "firebase/firestore";
 
 config();
@@ -37,6 +38,11 @@ client.once("ready", () => {
 });
 
 client.on("ready", async () => {
+  const guilds = [];
+  client.guilds.cache.forEach(el => guilds.push(el.id));
+
+  // await initBot(guilds);
+
   await refreshActiveGame();
 
   setInterval(async () => {

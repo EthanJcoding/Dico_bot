@@ -49,7 +49,7 @@ const saveUserToGame = async (
         gameUsername,
         joinedAt: serverTime,
         avatar,
-        acs: "",
+        acs: 0,
         tier: "",
       });
 
